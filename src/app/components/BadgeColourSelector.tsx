@@ -2,6 +2,7 @@ import { styled } from "@mui/material/styles";
 import { COLORS, WIDGET_ACTIONS } from "../constants";
 import { useWidgetsDispatch } from "../WidgetsContext";
 import DataLabel from "./DataLabel";
+import type { WidgetData } from "../types";
 
 const Container = styled('div')`
     display: flex;
@@ -18,16 +19,18 @@ const ColorsContainer = styled('div')`
 
 const Color = styled("div", {
     shouldForwardProp: (prop) => true
-  })<{ active?: number; color?: string }>(
-    ({ active, color }) => `
+  })<{ active?: number; color?: string, isDisabled: boolean }>(
+    ({ active, color, isDisabled }) => `
     height: 16px;
     width: 16px;
     background: ${color};
+    opacity: ${isDisabled ? 0.33 : 1 };
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.01);
-    border: ${active && '1.50px #B0B0B0 solid'}
+    border: ${active && '1.50px #B0B0B0 solid'};
+    cursor: ${isDisabled ? 'not-allowed': 'pointer'}
 `);
 
-export default function BadgeColourSelector({id, selectedColor}: { id: number, selectedColor: string}) {
+export default function BadgeColourSelector({id, active, selectedColor}: Pick<WidgetData, 'id' | 'active' | 'selectedColor'>) {
     const dispatch = useWidgetsDispatch();
 
     return (
@@ -38,9 +41,12 @@ export default function BadgeColourSelector({id, selectedColor}: { id: number, s
                     <Color key={colorKey}
                            color={COLORS[colorKey]}
                            active={colorKey === selectedColor ? 1 : 0}
+                           isDisabled={!active}
                            onClick={() => {
-                             dispatch({ type: WIDGET_ACTIONS.SELECT_COLOR, payload: {id, selectedColor: colorKey }})
-                           }}/>
+                                if (active) {
+                                    dispatch({ type: WIDGET_ACTIONS.SELECT_COLOR, payload: {id, selectedColor: colorKey }})
+                                }
+                            }}/>
                 ))}
             </ColorsContainer>
         </Container>

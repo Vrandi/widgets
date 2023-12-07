@@ -24,7 +24,8 @@ const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
         flexDirection: 'column',
         alignItems: 'center',
         gap: '12px',
-        width: '216px'
+        width: '216px',
+        fontFamily: 'inherit'
     },
   }));
 

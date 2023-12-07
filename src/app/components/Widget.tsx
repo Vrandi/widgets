@@ -4,7 +4,6 @@ import WidgetHeader from "./Header";
 import Link from "./Link";
 import BadgeColourSelector from "./BadgeColourSelector";
 import ActiveToggler from "./ActiveToggler";
-import { Grid } from "@mui/material";
 
 const Box = styled('div')`
     display: flex;
@@ -20,7 +19,7 @@ export default function Widget(props: WidgetData) {
         <Box>
             <WidgetHeader {...props}/>
             <Link id={props.id} linked={props.linked}/>
-            <BadgeColourSelector id={props.id} selectedColor={props.selectedColor} />
+            <BadgeColourSelector id={props.id} selectedColor={props.selectedColor} active={props.active} />
             <ActiveToggler id={props.id} active={props.active} />
         </Box>
     )
